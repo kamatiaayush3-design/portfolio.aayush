@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aayush | Portfolio</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+scroll-behavior:smooth;
+}
+
+body{
+background:#09090f;
+color:white;
+overflow-x:hidden;
+}
+
+body::before{
+content:"";
+position:fixed;
+width:700px;
+height:700px;
+background:radial-gradient(circle,#8a2be288,transparent 70%);
+top:-250px;
+right:-250px;
+z-index:-1;
+animation:move 10s infinite alternate;
+}
+
+@keyframes move{
+to{
+transform:translate(-100px,100px);
+}
+}
+
+nav{
+position:fixed;
+width:100%;
+padding:20px 10%;
+display:flex;
+justify-content:space-between;
+align-items:center;
+background:rgba(0,0,0,.45);
+backdrop-filter:blur(10px);
+z-index:1000;
+}
+
+nav h1{
+color:#b56dff;
+font-size:30px;
+}
+
+nav a{
+color:white;
+text-decoration:none;
+margin-left:25px;
+transition:.3s;
+}
+
+nav a:hover{
+color:#b56dff;
+}
+
+section{
+min-height:100vh;
+padding:120px 10%;
+display:flex;
+justify-content:center;
+flex-direction:column;
+animation:fadeUp 1s ease;
+}
+
+@keyframes fadeUp{
+from{
+opacity:0;
+transform:translateY(50px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+.hero h2{
+font-size:60px;
+}
+
+.hero h2 span{
+color:#b56dff;
+}
+
+.hero p{
+margin-top:15px;
+max-width:650px;
+line-height:1.8;
+color:#ccc;
+}
+
+.btn{
+display:inline-block;
+margin-top:35px;
+padding:15px 35px;
+background:#8a2be2;
+border-radius:50px;
+color:white;
+text-decoration:none;
+font-weight:bold;
+transition:.4s;
+box-shadow:0 0 30px #8a2be288;
+}
+
+.btn:hover{
+transform:translateY(-5px);
+box-shadow:0 0 40px #8a2be2;
+}
+
+.title{
+font-size:40px;
+margin-bottom:40px;
+color:#b56dff;
+}
+
+.cards{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+gap:25px;
+}
+
+.card{
+background:#12121c;
+padding:30px;
+border-radius:18px;
+transition:.4s;
+border:1px solid #222;
+}
+
+.card:hover{
+transform:translateY(-10px);
+border-color:#8a2be2;
+box-shadow:0 0 25px #8a2b
+e244;
+}
+
+.card h3{
+margin-bottom:15px;
+}
+
+.contact p{
+font-size:18px;
+margin:10px 0;
+}
+
+footer{
+text-align:center;
+padding:30px;
+color:#888;
+background:#050505;
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+<h1>Aayush</h1>
+
+<div>
+<a href="#about">About</a>
+<a href="#skills">Skills</a>
+<a href="#services">Services</a>
+<a href="#contact">Contact</a>
+</div>
+</nav>
+
+<section class="hero">
+
+<h2>Hello, I'm <span>Aayush</span></h2>
+
+<p>
+11th Standard Computer Science student from Nepal.
+Passionate about technology, graphic design and Discord bot development.
+I enjoy creating premium designs and building useful bots for communities.
+</p>
+
+<a class="btn" href="#contact">Hire Me</a>
+
+</section>
+
+<section id="about">
+
+<h1 class="title">About Me</h1>
+
+<p style="line-height:2;color:#ccc;font-size:18px;">
+I'm Aayush, a Computer Science student from Nepal with a passion for creativity and technology. I develop Discord bots and create professional logos and banners for local businesses, startups, budget brands, and even large-scale brands. My goal is to deliver modern, clean and premium-quality work.
+</p>
+
+</section>
+
+<section id="skills">
+
+<h1 class="title">Skills</h1>
+
+<div class="cards">
+
+<div class="card">
+<h3>🤖 Discord Bot Development</h3>
+<p>Create custom Discord bots with useful features and automation.</p>
+</div>
+
+<div class="card">
+<h3>🎨 Graphic Design</h3>
+<p>Modern logos, esports branding, posters and social media banners.</p>
+</div>
+
+<div class="card">
+<h3>💡 Branding</h3>
+<p>Professional identity design for local businesses and growing brands.</p>
+</div>
+
+</div>
+
+</section>
+
+<section id="services">
+
+<h1 class="title">Services</h1>
+
+<div class="cards">
+
+<div class="card">
+<h3>Logo Design</h3>
+<p>Premium logos for businesses, gaming teams and brands.</p>
+</div>
+
+<div class="card">
+<h3>Banner Design</h3>
+<p>Facebook, Discord, YouTube and event banners.</p>
+</div>
+
+<div class="card">
+<h3>Discord Bots</h3>
+<p>Custom bots for moderation, utility and community management.</p>
+</div>
+
+</div>
+
+</section>
+
+<section class="contact" id="contact">
+
+<h1 class="title">Contact</h1>
+
+<p>📞 +977 9826916100</p>
+
+<p>💬 WhatsApp: +977 9826916100</p>
+
+<p>📷 Instagram: @a4yush.lll</p>
+
+</section>
+
+<footer>
+
+© 2026 Aayush • Designed with 💜
+
+</footer>
+
+</body>
+</html>
