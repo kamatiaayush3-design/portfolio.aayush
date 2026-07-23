@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600">
+  <defs>
+    <radialGradient id="bgC" cx="50%" cy="50%" r="70%">
+      <stop offset="0%" stop-color="#1c140c"/>
+      <stop offset="60%" stop-color="#0a0706"/>
+      <stop offset="100%" stop-color="#050505"/>
+    </radialGradient>
+    <radialGradient id="coreC" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#f0d9a8"/>
+      <stop offset="60%" stop-color="#c9a875"/>
+      <stop offset="100%" stop-color="#5a441f" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="glowC" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="10" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="600" height="600" fill="url(#bgC)"/>
+  <circle cx="300" cy="300" r="140" fill="url(#coreC)" filter="url(#glowC)" opacity="0.8"/>
+  <g stroke="#f0d9a8" stroke-width="1.4" filter="url(#glowC)">
+    <line x1="300" y1="300" x2="300" y2="150" opacity="0.85"/>
+    <line x1="300" y1="300" x2="430" y2="230" opacity="0.7"/>
+    <line x1="300" y1="300" x2="430" y2="370" opacity="0.7"/>
+    <line x1="300" y1="300" x2="300" y2="450" opacity="0.85"/>
+    <line x1="300" y1="300" x2="170" y2="370" opacity="0.7"/>
+    <line x1="300" y1="300" x2="170" y2="230" opacity="0.7"/>
+  </g>
+  <circle cx="300" cy="150" r="7" fill="#f0d9a8"/>
+  <circle cx="430" cy="230" r="6" fill="#c9a875"/>
+  <circle cx="430" cy="370" r="6" fill="#c9a875"/>
+  <circle cx="300" cy="450" r="7" fill="#f0d9a8"/>
+  <circle cx="170" cy="370" r="6" fill="#c9a875"/>
+  <circle cx="170" cy="230" r="6" fill="#c9a875"/>
+  <circle cx="300" cy="300" r="14" fill="#050505" stroke="#f0d9a8" stroke-width="1.6"/>
+</svg>
