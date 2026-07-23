@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600">
+  <defs>
+    <radialGradient id="bgV" cx="60%" cy="70%" r="90%">
+      <stop offset="0%" stop-color="#15100a"/>
+      <stop offset="55%" stop-color="#0a0806"/>
+      <stop offset="100%" stop-color="#050505"/>
+    </radialGradient>
+    <linearGradient id="veinV" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#c9a875"/>
+      <stop offset="100%" stop-color="#f0d9a8"/>
+    </linearGradient>
+    <filter id="glowV" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="8" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="600" height="600" fill="url(#bgV)"/>
+  <g filter="url(#glowV)" fill="none" stroke="url(#veinV)" stroke-linecap="round">
+    <path d="M40 500 Q 200 420 300 300 T 560 100" stroke-width="2.2"/>
+    <path d="M60 460 Q 210 380 300 280" stroke-width="1.1" opacity="0.8"/>
+    <path d="M120 520 Q 240 420 300 320" stroke-width="1.1" opacity="0.7"/>
+    <path d="M320 300 Q 420 240 500 140" stroke-width="1.1" opacity="0.75"/>
+    <path d="M300 300 Q 380 200 380 80" stroke-width="1.1" opacity="0.6"/>
+  </g>
+  <circle cx="300" cy="300" r="5" fill="#f0d9a8" filter="url(#glowV)"/>
+</svg>

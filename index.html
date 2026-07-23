@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AURUM — Noctis Aurum | The Midnight Orchid</title>
+<meta name="description" content="AURUM Botanica presents Noctis Aurum — a rare gold-veined night orchid. An immersive digital showcase of a living luxury.">
+
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+
+<!-- Fonts: Cormorant Garamond (display serif) + Jost (modern sans / utility) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ============ PRELOADER ============ -->
+<div class="preloader" id="preloader" aria-hidden="true">
+  <div class="preloader__mark">
+    <svg viewBox="0 0 64 64" width="46" height="46">
+      <path d="M32 8 C 40 18, 40 28, 32 36 C 24 28, 24 18, 32 8 Z" fill="none" stroke="#c9a875" stroke-width="1"/>
+    </svg>
+  </div>
+  <div class="preloader__label">AURUM</div>
+  <div class="preloader__bar"><span id="preloaderFill"></span></div>
+  <div class="preloader__count" id="preloaderCount">0</div>
+</div>
+
+<!-- ============ CUSTOM CURSOR ============ -->
+<div class="cursor cursor--ring" id="cursorRing" aria-hidden="true"></div>
+<div class="cursor cursor--dot" id="cursorDot" aria-hidden="true"></div>
+
+<!-- ============ AMBIENT PARTICLE CANVAS (Three.js) ============ -->
+<canvas id="particleCanvas" aria-hidden="true"></canvas>
+
+<!-- ============ NOISE / VIGNETTE OVERLAY ============ -->
+<div class="vignette" aria-hidden="true"></div>
+
+<!-- ============ FLOATING NAVBAR ============ -->
+<header class="nav" id="siteNav">
+  <a href="#home" class="nav__logo" data-magnet>
+    <span class="nav__logo-mark">✦</span> AURUM
+  </a>
+  <nav class="nav__links" aria-label="Primary">
+    <a href="#home" class="nav__link is-active" data-section="home" data-magnet>Home</a>
+    <a href="#collection" class="nav__link" data-section="collection" data-magnet>Collection</a>
+    <a href="#story" class="nav__link" data-section="story" data-magnet>Story</a>
+    <a href="#contact" class="nav__link" data-section="contact" data-magnet>Contact</a>
+  </nav>
+  <button class="nav__cta" data-magnet>
+    <span>Reserve</span>
+  </button>
+  <button class="nav__burger" id="navBurger" aria-label="Open menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+
+<!-- Mobile menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#home" data-section="home">Home</a>
+  <a href="#collection" data-section="collection">Collection</a>
+  <a href="#story" data-section="story">Story</a>
+  <a href="#contact" data-section="contact">Contact</a>
+</div>
+
+<main id="smoothWrap">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero" id="home">
+
+    <div class="hero__flower-parallax" id="flowerParallax">
+    <div class="hero__flower-stage" id="flowerStage">
+      <!-- Layered original SVG orchid — the signature hero object -->
+      <svg class="hero__flower" id="heroFlower" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="petalGrad" cx="35%" cy="25%" r="80%">
+            <stop offset="0%" stop-color="#241a20"/>
+            <stop offset="55%" stop-color="#150f13"/>
+            <stop offset="100%" stop-color="#0a070a"/>
+          </radialGradient>
+          <radialGradient id="petalGradAlt" cx="65%" cy="30%" r="85%">
+            <stop offset="0%" stop-color="#2a1e26"/>
+            <stop offset="60%" stop-color="#160f14"/>
+            <stop offset="100%" stop-color="#0a070a"/>
+          </radialGradient>
+          <linearGradient id="veinGold" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#f0d9a8"/>
+            <stop offset="100%" stop-color="#a3824a"/>
+          </linearGradient>
+          <radialGradient id="coreGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#fdf0d0"/>
+            <stop offset="45%" stop-color="#e3bd77"/>
+            <stop offset="100%" stop-color="#7a5a26" stop-opacity="0"/>
+          </radialGradient>
+          <filter id="softGlow" x="-80%" y="-80%" width="260%" height="260%">
+            <feGaussianBlur stdDeviation="5.5" result="blur"/>
+            <feMerge>
+              <feMergeNode in="blur"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
+          <filter id="bigGlow" x="-120%" y="-120%" width="340%" height="340%">
+            <feGaussianBlur stdDeviation="18"/>
+          </filter>
+        </defs>
+
+        <!-- ambient bloom behind flower -->
+        <circle cx="400" cy="410" r="260" fill="url(#coreGlow)" opacity="0.35" filter="url(#bigGlow)"/>
+
+        <!-- back petal layer (5 petals) -->
+        <g id="petalLayerBack" class="petal-layer">
+          <g transform="rotate(0 400 410)">
+            <path class="petal" d="M400 410 C 470 320 500 210 400 60 C 300 210 330 320 400 410 Z" fill="url(#petalGrad)" stroke="#3a2a30" stroke-width="1"/>
+          </g>
+          <g transform="rotate(72 400 410)">
+            <path class="petal" d="M400 410 C 470 320 500 210 400 60 C 300 210 330 320 400 410 Z" fill="url(#petalGradAlt)" stroke="#3a2a30" stroke-width="1"/>
+          </g>
+          <g transform="rotate(144 400 410)">
+            <path class="petal" d="M400 410 C 470 320 500 210 400 60 C 300 210 330 320 400 410 Z" fill="url(#petalGrad)" stroke="#3a2a30" stroke-width="1"/>
+          </g>
+          <g transform="rotate(216 400 410)">
+            <path class="petal" d="M400 410 C 470 320 500 210 400 60 C 300 210 330 320 400 410 Z" fill="url(#petalGradAlt)" stroke="#3a2a30" stroke-width="1"/>
+          </g>
+          <g transform="rotate(288 400 410)">
+            <path class="petal" d="M400 410 C 470 320 500 210 400 60 C 300 210 330 320 400 410 Z" fill="url(#petalGrad)" stroke="#3a2a30" stroke-width="1"/>
+          </g>
+        </g>
+
+        <!-- gold veins on back layer -->
+        <g id="veinLayer" stroke="url(#veinGold)" fill="none" stroke-width="1.1" filter="url(#softGlow)" opacity="0.85">
+          <g transform="rotate(0 400 410)">
+            <path class="vein" d="M400 410 C 400 320 400 200 400 70"/>
+            <path class="vein" d="M400 410 C 420 340 430 250 415 120"/>
+            <path class="vein" d="M400 410 C 380 340 370 250 385 120"/>
+          </g>
+          <g transform="rotate(72 400 410)">
+            <path class="vein" d="M400 410 C 400 320 400 200 400 70"/>
+            <path class="vein" d="M400 410 C 420 340 430 250 415 120"/>
+          </g>
+          <g transform="rotate(144 400 410)">
+            <path class="vein" d="M400 410 C 400 320 400 200 400 70"/>
+            <path class="vein" d="M400 410 C 380 340 370 250 385 120"/>
+          </g>
+          <g transform="rotate(216 400 410)">
+            <path class="vein" d="M400 410 C 400 320 400 200 400 70"/>
+            <path class="vein" d="M400 410 C 420 340 430 250 415 120"/>
+          </g>
+          <g transform="rotate(288 400 410)">
+            <path class="vein" d="M400 410 C 400 320 400 200 400 70"/>
+            <path class="vein" d="M400 410 C 380 340 370 250 385 120"/>
+          </g>
+        </g>
+
+        <!-- front petal layer (5 petals, offset rotation, smaller) -->
+        <g id="petalLayerFront" class="petal-layer">
+          <g transform="rotate(36 400 420) scale(0.72)" transform-origin="400 420">
+            <path class="petal petal--front" d="M400 420 C 455 350 475 260 400 140 C 325 260 345 350 400 420 Z" fill="url(#petalGradAlt)" stroke="#4a3540" stroke-width="1"/>
+          </g>
+          <g transform="rotate(108 400 420) scale(0.72)" transform-origin="400 420">
+            <path class="petal petal--front" d="M400 420 C 455 350 475 260 400 140 C 325 260 345 350 400 420 Z" fill="url(#petalGrad)" stroke="#4a3540" stroke-width="1"/>
+          </g>
+          <g transform="rotate(180 400 420) scale(0.72)" transform-origin="400 420">
+            <path class="petal petal--front" d="M400 420 C 455 350 475 260 400 140 C 325 260 345 350 400 420 Z" fill="url(#petalGradAlt)" stroke="#4a3540" stroke-width="1"/>
+          </g>
+          <g transform="rotate(252 400 420) scale(0.72)" transform-origin="400 420">
+            <path class="petal petal--front" d="M400 420 C 455 350 475 260 400 140 C 325 260 345 350 400 420 Z" fill="url(#petalGrad)" stroke="#4a3540" stroke-width="1"/>
+          </g>
+          <g transform="rotate(324 400 420) scale(0.72)" transform-origin="400 420">
+            <path class="petal petal--front" d="M400 420 C 455 350 475 260 400 140 C 325 260 345 350 400 420 Z" fill="url(#petalGradAlt)" stroke="#4a3540" stroke-width="1"/>
+          </g>
+        </g>
+
+        <!-- gold veins on front layer -->
+        <g id="veinLayerFront" stroke="url(#veinGold)" fill="none" stroke-width="1" filter="url(#softGlow)" opacity="0.9">
+          <g transform="rotate(36 400 420) scale(0.72)" transform-origin="400 420">
+            <path class="vein vein--pulse" d="M400 420 C 400 350 400 260 400 150"/>
+          </g>
+          <g transform="rotate(108 400 420) scale(0.72)" transform-origin="400 420">
+            <path class="vein vein--pulse" d="M400 420 C 400 350 400 260 400 150"/>
+          </g>
+          <g transform="rotate(180 400 420) scale(0.72)" transform-origin="400 420">
+            <path class="vein vein--pulse" d="M400 420 C 400 350 400 260 400 150"/>
+          </g>
+          <g transform="rotate(252 400 420) scale(0.72)" transform-origin="400 420">
+            <path class="vein vein--pulse" d="M400 420 C 400 350 400 260 400 150"/>
+          </g>
+          <g transform="rotate(324 400 420) scale(0.72)" transform-origin="400 420">
+            <path class="vein vein--pulse" d="M400 420 C 400 350 400 260 400 150"/>
+          </g>
+        </g>
+
+        <!-- lip / throat -->
+        <path d="M400 420 C 440 460 440 500 400 520 C 360 500 360 460 400 420 Z" fill="#0d090c" stroke="url(#veinGold)" stroke-width="1.2" filter="url(#softGlow)"/>
+
+        <!-- core -->
+        <circle cx="400" cy="418" r="34" fill="url(#coreGlow)" filter="url(#softGlow)"/>
+        <circle id="coreDot" cx="400" cy="418" r="9" fill="#fdf0d0" filter="url(#softGlow)"/>
+
+        <!-- stamens -->
+        <g stroke="#e3bd77" stroke-width="1" filter="url(#softGlow)">
+          <line x1="400" y1="418" x2="400" y2="380"/>
+          <line x1="400" y1="418" x2="424" y2="396"/>
+          <line x1="400" y1="418" x2="376" y2="396"/>
+        </g>
+        <circle cx="400" cy="380" r="3" fill="#fdf0d0"/>
+        <circle cx="424" cy="396" r="2.6" fill="#e3bd77"/>
+        <circle cx="376" cy="396" r="2.6" fill="#e3bd77"/>
+
+        <!-- slender stem descending -->
+        <path d="M400 520 C 396 590 404 660 400 740" stroke="#241a1e" stroke-width="3" fill="none"/>
+        <path d="M400 520 C 396 590 404 660 400 740" stroke="url(#veinGold)" stroke-width="0.6" fill="none" opacity="0.5"/>
+      </svg>
+    </div>
+    </div>
+
+    <!-- LEFT: species identity panel -->
+    <div class="hero__panel hero__panel--left" data-reveal>
+      <p class="eyebrow">Rare Cultivar N°07</p>
+      <h1 class="hero__name">Noctis<br><em>Aurum</em></h1>
+      <p class="hero__latin">Phalaenopsis nocturna &lsquo;Aurum&rsquo;</p>
+      <p class="hero__desc">A night-blooming orchid whose petals carry threads of living gold. Discovered along volcanic ridgelines where warm mist meets cold air, it opens only after dusk — and glows, faintly, until first light.</p>
+
+      <ul class="hero__facts">
+        <li><span>Origin</span><strong>Ijen Highlands, Indonesia</strong></li>
+        <li><span>Family</span><strong>Orchidaceae</strong></li>
+        <li><span>Category</span><strong>Epiphytic — Night Bloom</strong></li>
+      </ul>
+    </div>
+
+    <!-- RIGHT: gallery + cta + social -->
+    <div class="hero__panel hero__panel--right" data-reveal>
+      <p class="eyebrow eyebrow--right">Macro Study</p>
+
+      <div class="glance-gallery">
+        <figure class="glance-card" data-magnet>
+          <img src="assets/macro-petal.svg" alt="Macro detail of Noctis Aurum petal texture" loading="lazy" width="600" height="600">
+          <figcaption>Petal Grain</figcaption>
+        </figure>
+        <figure class="glance-card" data-magnet>
+          <img src="assets/macro-vein.svg" alt="Macro detail of gold veining on the petal" loading="lazy" width="600" height="600">
+          <figcaption>Gold Vein</figcaption>
+        </figure>
+        <figure class="glance-card" data-magnet>
+          <img src="assets/macro-core.svg" alt="Macro detail of the orchid's glowing core" loading="lazy" width="600" height="600">
+          <figcaption>Living Core</figcaption>
+        </figure>
+      </div>
+
+      <div class="hero__actions">
+        <a href="#collection" class="btn btn--primary" data-magnet><span>View Details</span></a>
+        <div class="social-row" aria-label="Social links">
+          <a href="#" aria-label="Instagram" data-magnet>IG</a>
+          <a href="#" aria-label="Pinterest" data-magnet>PT</a>
+          <a href="#" aria-label="Behance" data-magnet>BE</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="scroll-cue" data-magnet>
+      <span class="scroll-cue__line"></span>
+      <span class="scroll-cue__text">Scroll</span>
+    </div>
+  </section>
+
+  <!-- ============ COLLECTION ============ -->
+  <section class="collection" id="collection">
+    <div class="section-head" data-reveal>
+      <p class="eyebrow">The Collection</p>
+      <h2 class="section-title">Six blooms.<br>One vault of light.</h2>
+      <p class="section-sub">Every cultivar in the AURUM archive is grown once, catalogued once, and never repeated. What you see is what will only ever exist this way.</p>
+    </div>
+
+    <div class="collection__grid">
+      <article class="bloom-card" data-reveal>
+        <div class="bloom-card__media">
+          <img src="assets/macro-core.svg" alt="Solis Noir cultivar macro" loading="lazy" width="600" height="600">
+        </div>
+        <div class="bloom-card__body">
+          <span class="bloom-card__index">N°01</span>
+          <h3>Solis Noir</h3>
+          <p>A black-petaled bloom rimmed in molten copper.</p>
+          <button class="text-link" data-magnet>View Details<i>→</i></button>
+        </div>
+      </article>
+
+      <article class="bloom-card" data-reveal>
+        <div class="bloom-card__media">
+          <img src="assets/macro-vein.svg" alt="Argent Bruma cultivar macro" loading="lazy" width="600" height="600">
+        </div>
+        <div class="bloom-card__body">
+          <span class="bloom-card__index">N°02</span>
+          <h3>Argent Bruma</h3>
+          <p>Silver mist petals that fade to smoke at the tips.</p>
+          <button class="text-link" data-magnet>View Details<i>→</i></button>
+        </div>
+      </article>
+
+      <article class="bloom-card" data-reveal>
+        <div class="bloom-card__media">
+          <img src="assets/macro-petal.svg" alt="Noctis Aurum cultivar macro" loading="lazy" width="600" height="600">
+        </div>
+        <div class="bloom-card__body">
+          <span class="bloom-card__index">N°07</span>
+          <h3>Noctis Aurum</h3>
+          <p>The gold-veined night bloomer, featured above.</p>
+          <button class="text-link" data-magnet>View Details<i>→</i></button>
+        </div>
+      </article>
+
+      <article class="bloom-card" data-reveal>
+        <div class="bloom-card__media">
+          <img src="assets/macro-core.svg" alt="Ember Fen cultivar macro" loading="lazy" width="600" height="600">
+        </div>
+        <div class="bloom-card__body">
+          <span class="bloom-card__index">N°11</span>
+          <h3>Ember Fen</h3>
+          <p>Deep garnet petals with a slow-burning amber core.</p>
+          <button class="text-link" data-magnet>View Details<i>→</i></button>
+        </div>
+      </article>
+
+      <article class="bloom-card" data-reveal>
+        <div class="bloom-card__media">
+          <img src="assets/macro-vein.svg" alt="Verre Pale cultivar macro" loading="lazy" width="600" height="600">
+        </div>
+        <div class="bloom-card__body">
+          <span class="bloom-card__index">N°14</span>
+          <h3>Verre Pâle</h3>
+          <p>Glass-thin petals veined with pale jade.</p>
+          <button class="text-link" data-magnet>View Details<i>→</i></button>
+        </div>
+      </article>
+
+      <article class="bloom-card" data-reveal>
+        <div class="bloom-card__media">
+          <img src="assets/macro-petal.svg" alt="Ombre Royale cultivar macro" loading="lazy" width="600" height="600">
+        </div>
+        <div class="bloom-card__body">
+          <span class="bloom-card__index">N°19</span>
+          <h3>Ombre Royale</h3>
+          <p>A violet-to-black gradient, edged in fine platinum.</p>
+          <button class="text-link" data-magnet>View Details<i>→</i></button>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============ STORY ============ -->
+  <section class="story" id="story">
+    <div class="story__visual" data-reveal>
+      <svg viewBox="0 0 400 400" class="story__mini-flower" aria-hidden="true">
+        <circle cx="200" cy="200" r="150" fill="url(#coreGlow)" opacity="0.25"/>
+        <g transform="rotate(0 200 200)"><path d="M200 200 C 235 155 250 100 200 30 C 150 100 165 155 200 200 Z" fill="#150f13" stroke="#3a2a30"/></g>
+        <g transform="rotate(90 200 200)"><path d="M200 200 C 235 155 250 100 200 30 C 150 100 165 155 200 200 Z" fill="#160f14" stroke="#3a2a30"/></g>
+        <g transform="rotate(180 200 200)"><path d="M200 200 C 235 155 250 100 200 30 C 150 100 165 155 200 200 Z" fill="#150f13" stroke="#3a2a30"/></g>
+        <g transform="rotate(270 200 200)"><path d="M200 200 C 235 155 250 100 200 30 C 150 100 165 155 200 200 Z" fill="#160f14" stroke="#3a2a30"/></g>
+        <circle cx="200" cy="200" r="16" fill="url(#coreGlow)"/>
+      </svg>
+    </div>
+
+    <div class="story__copy">
+      <p class="eyebrow" data-reveal>Cultivation Story</p>
+      <h2 class="story__title" data-reveal>Grown in <em>darkness</em>,<br>finished in <em>gold</em>.</h2>
+      <p class="story__para" data-reveal>Noctis Aurum spends eleven months sealed in volcanic shade before its first bud appears. Our growers feed it nothing but mineral-rich condensation drawn from the mountain fog — the same trace minerals that later surface as its signature gold veining.</p>
+      <p class="story__para" data-reveal>Once cut, a bloom survives four days at most. So instead, we bring the room to the flower: every AURUM piece is viewed once, by appointment, inside a single darkened chamber lit only by the orchid itself.</p>
+
+      <div class="story__stats" data-reveal>
+        <div><strong>11</strong><span>Months to bloom</span></div>
+        <div><strong>04</strong><span>Days alive, once cut</span></div>
+        <div><strong>01</strong><span>Viewing, by appointment</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT / FOOTER ============ -->
+  <section class="contact" id="contact">
+    <div class="contact__inner" data-reveal>
+      <p class="eyebrow">Private Viewing</p>
+      <h2 class="contact__title">Request an audience<br>with <em>Noctis Aurum</em>.</h2>
+      <p class="contact__sub">Viewings are limited to one party per evening, inside our Amsterdam atelier.</p>
+
+      <form class="contact__form" id="contactForm" novalidate>
+        <div class="field">
+          <input type="text" id="fullName" name="fullName" required placeholder=" ">
+          <label for="fullName">Full name</label>
+        </div>
+        <div class="field">
+          <input type="email" id="email" name="email" required placeholder=" ">
+          <label for="email">Email address</label>
+        </div>
+        <button type="submit" class="btn btn--primary" data-magnet><span>Request Viewing</span></button>
+        <p class="field__note" id="formNote" role="status"></p>
+      </form>
+    </div>
+
+    <footer class="footer">
+      <div class="footer__row">
+        <a href="#home" class="nav__logo" data-magnet><span class="nav__logo-mark">✦</span> AURUM</a>
+        <div class="social-row" aria-label="Social links">
+          <a href="#" aria-label="Instagram" data-magnet>Instagram</a>
+          <a href="#" aria-label="Pinterest" data-magnet>Pinterest</a>
+          <a href="#" aria-label="Behance" data-magnet>Behance</a>
+        </div>
+      </div>
+      <div class="footer__row footer__row--small">
+        <span>© 2026 AURUM Botanica. All blooms reserved.</span>
+        <button class="back-to-top" id="backToTop" aria-label="Back to top" data-magnet>↑ Top</button>
+      </div>
+    </footer>
+  </section>
+
+</main>
+
+<!-- ============ SCRIPTS ============ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
